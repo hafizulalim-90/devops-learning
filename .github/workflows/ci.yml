@@ -1,12 +1,22 @@
-name: First CI Pipeline
+name: CI with Terraform Plan
 
 on:
   push:
 
 jobs:
-  build:
+  terraform:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Say Hello
-        run: echo "CI pipeline is running successfully!"
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform/ec2
+
+      - name: Terraform Plan
+        run: terraform plan
+        working-directory: terraform/ec2
+
